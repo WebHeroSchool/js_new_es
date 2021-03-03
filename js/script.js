@@ -44,16 +44,31 @@ const questions = [
 
 let answers = ['c', 'c', 'd', 'b'];
 
-const checkAnswers = function (answersArr, questionArr) {
+// const checkAnswers = function (answersArr, questionArr) {
+//     for (let i = 0; i < questionArr.length; i++) {
+//         console.log(`Вопрос ${i+1} ${questionArr[i].question}`);
+//         if (answersArr[i] === questionArr[i].correctAnswer) {
+//             console.log(`${answersArr[i]}: ${questionArr[i].answers[answersArr[i]]} - ответ верный`)
+//         } else {
+//             console.error(`${answersArr[i]}: ${questionArr[i].answers[answersArr[i]]} - ответ неверный`);
+//             console.log(`верный ответ ${questionArr[i].correctAnswer}: ${questionArr[i].answers[questionArr[i].correctAnswer]}`)
+//         }
+//     }
+// };
+
+//checkAnswers(answers, questions);
+
+const results = document.createElement('div');
+document.body.appendChild(results);
+
+const showResults = (answersArr, questionArr) => {
+    let score = 0; //счетчик для верных ответов
     for (let i = 0; i < questionArr.length; i++) {
-        console.log(`Вопрос ${i+1} ${questionArr[i].question}`);
         if (answersArr[i] === questionArr[i].correctAnswer) {
-            console.log(`${answersArr[i]}: ${questionArr[i].answers[answersArr[i]]} - ответ верный`)
-        } else {
-            console.error(`${answersArr[i]}: ${questionArr[i].answers[answersArr[i]]} - ответ неверный`);
-            console.log(`верный ответ ${questionArr[i].correctAnswer}: ${questionArr[i].answers[questionArr[i].correctAnswer]}`)
+            score++
         }
     }
+    return results.innerHTML = `Количество правильных ответов: ${score}`;
 };
+showResults(answers, questions);
 
-checkAnswers(answers, questions);
