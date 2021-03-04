@@ -1,5 +1,4 @@
 let num;
-let score;
 
 const questions = [
     {
@@ -58,6 +57,12 @@ let answers = ['c', 'c', 'd', 'b'];
 
 //checkAnswers(answers, questions);
 
+const next = document.querySelector('.next');
+const prev = document.querySelector('.previous');
+const slide = document.createElement('div');
+document.body.appendChild(slide);
+slide.innerHTML = 1;
+
 const results = document.createElement('div');
 document.body.appendChild(results);
 
@@ -71,4 +76,23 @@ const showResults = (answersArr, questionArr) => {
     return results.innerHTML = `Количество правильных ответов: ${score}`;
 };
 showResults(answers, questions);
+
+const showNextSlide = (qualifiedName, value) => {
+    prev.disabled = false;
+    slide.innerHTML++;
+    if (slide.innerHTML >= questions.length) {
+        next.disabled = true;
+    }
+};
+
+const showPrevSlide = (qualifiedName, value) => {
+    next.disabled = false;
+    slide.innerHTML--;
+    if (slide.innerHTML <= 1) {
+        prev.setAttribute('disabled', 'disabled');
+    }
+};
+
+next.addEventListener('click', showNextSlide);
+prev.addEventListener('click', showPrevSlide);
 
