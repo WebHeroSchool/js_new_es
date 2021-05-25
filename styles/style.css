@@ -16,6 +16,15 @@ h1{
   background-color: #444;
   color: #fff;
 }
+
+.form {
+  margin-top: 20px;
+}
+
+.quiz-wrap {
+  display: none;
+}
+
 .question{
   font-size: 30px;
   margin-bottom: 10px;
@@ -61,4 +70,12 @@ button:hover{
   position: relative;
   height: 200px;
   margin-top: 40px;
+}
+
+.error {
+  border: 1px solid orangered;
+}
+
+.error-block {
+  color: orangered;
 }

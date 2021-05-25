@@ -1,7 +1,14 @@
-// Variables
 const quizContainer = document.getElementById('quiz');
 const resultsContainer = document.getElementById('results');
 const submitButton = document.getElementById('submit');
+let quiz = document.querySelector('.quiz-wrap');
+let form = document.querySelector('.form');
+let name = document.querySelector('.name');
+let error = document.createElement('div');
+error.className = 'error-block';
+const previousButton = document.getElementById("previous");
+const nextButton = document.getElementById("next");
+let currentSlide = 0;
 const myQuestions = [
   {
     question: "Who invented JavaScript?",
@@ -33,6 +40,24 @@ const myQuestions = [
   }
 ];
 
+function validation(event) {
+  let regex = /^[А-ЯЁ][а-яё]{1,9}$/;
+  name.classList.remove('error');
+
+  if(!regex.test(name.value)) {
+    event.preventDefault();
+    console.log('error');
+    name.classList.add('error');
+    error.innerHTML = 'Please enter correct name';
+    name.parentElement.insertBefore(error, name);
+  }
+  else {
+    event.preventDefault();
+    form.style.display = 'none';
+    quiz.style.display = 'block';
+  }
+}
+
 function buildQuiz(){
   const output = [];
 
@@ -62,25 +87,8 @@ function buildQuiz(){
   quizContainer.innerHTML = output.join('');
 }
 
-function showResults(){
-  const answerContainers = quizContainer.querySelectorAll('.answers');
-  let numCorrect = 0;
-
-  myQuestions.forEach( (currentQuestion, questionNumber) => {
-
-    const answerContainer = answerContainers[questionNumber];
-    const selector = `input[name=question${questionNumber}]:checked`;
-    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-
-    if(userAnswer === currentQuestion.correctAnswer){
-      numCorrect++;
-    }
-  });
-
-  resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
-}
-
 function showSlide(n) {
+  const slides = document.querySelectorAll(".slide");
   slides[currentSlide].classList.remove('active-slide');
   slides[n].classList.add('active-slide');
   currentSlide = n;
@@ -108,48 +116,51 @@ function showPreviousSlide() {
   showSlide(currentSlide - 1);
 }
 
-const checkResult = (e) => {
+function checkResult (e) {
   const tar = e.target;
   if(tar.tagName === 'INPUT') {
     const questionNumber = tar.name.slice(-1);
     const userAnswer = tar.value;
     const isCorrect = myQuestions[questionNumber].correctAnswer === userAnswer;
     if(isCorrect) {
-      tar.parentNode.style.color = '#0ec20e';
+      tar.parentNode.style.color = 'limegreen';
     } else {
-      tar.parentNode.style.color = '#f53900';
+      tar.parentNode.style.color = 'orangered';
     }
     const radioButtons = e.currentTarget.querySelectorAll('.answers input');
     radioButtons.forEach(button => button.setAttribute('disabled', true));
   }
 };
 
-const setAnswerHandler = () => {
+function setAnswerHandler() {
   Array.from(quizContainer.querySelectorAll('.slide .answers')).forEach(answer => {
     answer.addEventListener('click', checkResult);
   })
 };
 
+function showResults(){
+  const answerContainers = quizContainer.querySelectorAll('.answers');
+  let numCorrect = 0;
 
+  myQuestions.forEach( (currentQuestion, questionNumber) => {
 
+    const answerContainer = answerContainers[questionNumber];
+    const selector = `input[name=question${questionNumber}]:checked`;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
-// Kick things off
+    if(userAnswer === currentQuestion.correctAnswer){
+      numCorrect++;
+    }
+  });
+
+  resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+}
+
 buildQuiz();
-
-
-// Pagination
-const previousButton = document.getElementById("previous");
-const nextButton = document.getElementById("next");
-const slides = document.querySelectorAll(".slide");
-let currentSlide = 0;
-
-// Show the first slide
 showSlide(currentSlide);
 setAnswerHandler();
 
-// Event listeners
+form.addEventListener('submit', validation);
 submitButton.addEventListener('click', showResults);
 previousButton.addEventListener("click", showPreviousSlide);
 nextButton.addEventListener("click", showNextSlide);
-
-
