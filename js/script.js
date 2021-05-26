@@ -41,7 +41,7 @@ const questions = [
     },
 ];
 
-let answers = ['c', 'c', 'd', 'b'];
+let answers = ["c", "c", "d", "b"];
 
 // const checkAnswers = function (answersArr, questionArr) {
 //     for (let i = 0; i < questionArr.length; i++) {
@@ -57,20 +57,20 @@ let answers = ['c', 'c', 'd', 'b'];
 
 //checkAnswers(answers, questions);
 
-const next = document.querySelector('.next');
-const prev = document.querySelector('.previous');
-const slide = document.createElement('div');
+const next = document.querySelector(".next");
+const prev = document.querySelector(".previous");
+const slide = document.createElement("div");
 document.body.appendChild(slide);
 slide.innerHTML = 1;
 
-const results = document.createElement('div');
+const results = document.createElement("div");
 document.body.appendChild(results);
 
 const showResults = (answersArr, questionArr) => {
     let score = 0; //счетчик для верных ответов
     for (let i = 0; i < questionArr.length; i++) {
         if (answersArr[i] === questionArr[i].correctAnswer) {
-            score++
+            score++;
         }
     }
     return results.innerHTML = `Количество правильных ответов: ${score}`;
@@ -89,10 +89,10 @@ const showPrevSlide = (qualifiedName, value) => {
     next.disabled = false;
     slide.innerHTML--;
     if (slide.innerHTML <= 1) {
-        prev.setAttribute('disabled', 'disabled');
+        prev.setAttribute("disabled", "disabled");
     }
 };
 
-next.addEventListener('click', showNextSlide);
-prev.addEventListener('click', showPrevSlide);
+next.addEventListener("click", showNextSlide);
+prev.addEventListener("click", showPrevSlide);
 
