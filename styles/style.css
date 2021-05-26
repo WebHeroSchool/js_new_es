@@ -72,6 +72,10 @@ button:hover{
   margin-top: 40px;
 }
 
+#restart {
+  display: none;
+}
+
 .error {
   border: 1px solid orangered;
 }
