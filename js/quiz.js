@@ -1,7 +1,17 @@
-// Variables
 const quizContainer = document.getElementById('quiz');
 const resultsContainer = document.getElementById('results');
 const submitButton = document.getElementById('submit');
+let quiz = document.querySelector('.quiz-wrap');
+let form = document.querySelector('.form');
+let name = document.querySelector('.name');
+let error = document.createElement('div');
+error.className = 'error-block';
+const previousButton = document.getElementById("previous");
+const nextButton = document.getElementById("next");
+const restartButton = document.getElementById("restart");
+let currentSlide = 0;
+
+
 const myQuestions = [
   {
     question: "Who invented JavaScript?",
@@ -33,6 +43,26 @@ const myQuestions = [
   }
 ];
 
+buildQuiz();
+const slides = document.querySelectorAll(".slide");
+
+function validation(event) {
+  let regex = /^[А-ЯЁ][а-яё]{1,9}$/;
+  name.classList.remove('error');
+
+  if(!regex.test(name.value)) {
+    event.preventDefault();
+    name.classList.add('error');
+    error.innerHTML = 'Please enter correct name';
+    name.parentElement.insertBefore(error, name);
+  }
+  else {
+    event.preventDefault();
+    form.style.display = 'none';
+    quiz.style.display = 'block';
+  }
+}
+
 function buildQuiz(){
   const output = [];
 
@@ -62,25 +92,37 @@ function buildQuiz(){
   quizContainer.innerHTML = output.join('');
 }
 
-function showResults(){
-  const answerContainers = quizContainer.querySelectorAll('.answers');
-  let numCorrect = 0;
 
-  myQuestions.forEach( (currentQuestion, questionNumber) => {
 
-    const answerContainer = answerContainers[questionNumber];
-    const selector = `input[name=question${questionNumber}]:checked`;
-    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-
-    if(userAnswer === currentQuestion.correctAnswer){
-      numCorrect++;
+function timer() {
+  const radioBtns = slides[currentSlide].querySelectorAll('INPUT');
+  let seconds = 10;
+  let idInt = function() {
+    if (seconds >= 0) {
+      seconds--;
+    } else {
+      radioBtns.forEach(button => button.setAttribute('disabled', true));
+      clearInterval(timerId);
+      if (currentSlide === slides.length - 1) {
+        showResults();
+        // return;
+      } else {
+        showNextSlide();
+      }
     }
-  });
+  };
+  let timerId = setInterval(idInt, 1000);
 
-  resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+  nextButton.addEventListener('click', function() {
+    clearInterval(timerId);
+  });
+  previousButton.addEventListener('click', function() {
+    clearInterval(timerId);
+  });
 }
 
 function showSlide(n) {
+
   slides[currentSlide].classList.remove('active-slide');
   slides[n].classList.add('active-slide');
   currentSlide = n;
@@ -92,12 +134,15 @@ function showSlide(n) {
   }
   if(currentSlide === slides.length - 1){
     nextButton.style.display = 'none';
-    submitButton.style.display = 'inline-block';
+    if (!resultsContainer.innerHTML) {
+      submitButton.style.display = 'inline-block';
+    }
   }
   else{
     nextButton.style.display = 'inline-block';
     submitButton.style.display = 'none';
   }
+  timer()
 }
 
 function showNextSlide() {
@@ -108,48 +153,58 @@ function showPreviousSlide() {
   showSlide(currentSlide - 1);
 }
 
-const checkResult = (e) => {
+function checkResult (e) {
   const tar = e.target;
   if(tar.tagName === 'INPUT') {
     const questionNumber = tar.name.slice(-1);
     const userAnswer = tar.value;
     const isCorrect = myQuestions[questionNumber].correctAnswer === userAnswer;
     if(isCorrect) {
-      tar.parentNode.style.color = '#0ec20e';
+      tar.parentNode.style.color = 'limegreen';
     } else {
-      tar.parentNode.style.color = '#f53900';
+      tar.parentNode.style.color = 'orangered';
     }
     const radioButtons = e.currentTarget.querySelectorAll('.answers input');
     radioButtons.forEach(button => button.setAttribute('disabled', true));
   }
-};
+}
 
-const setAnswerHandler = () => {
+function setAnswerHandler() {
   Array.from(quizContainer.querySelectorAll('.slide .answers')).forEach(answer => {
     answer.addEventListener('click', checkResult);
   })
-};
+}
 
+function showResults() {
+  const answerContainers = quizContainer.querySelectorAll('.answers');
+  let numCorrect = 0;
 
+  myQuestions.forEach((currentQuestion, questionNumber) => {
 
+    const answerContainer = answerContainers[questionNumber];
+    const selector = `input[name=question${questionNumber}]:checked`;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
-// Kick things off
-buildQuiz();
+    if (userAnswer === currentQuestion.correctAnswer) {
+      numCorrect++;
+    }
+  });
 
+  resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+  submitButton.style.display = 'none';
+  restartButton.style.display = 'inline-block';
+}
 
-// Pagination
-const previousButton = document.getElementById("previous");
-const nextButton = document.getElementById("next");
-const slides = document.querySelectorAll(".slide");
-let currentSlide = 0;
+function restart() {
+  document.location.reload();
+}
 
-// Show the first slide
 showSlide(currentSlide);
 setAnswerHandler();
 
-// Event listeners
+form.addEventListener('submit', validation);
 submitButton.addEventListener('click', showResults);
 previousButton.addEventListener("click", showPreviousSlide);
 nextButton.addEventListener("click", showNextSlide);
-
+restartButton.addEventListener("click", restart);
 

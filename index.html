@@ -8,12 +8,19 @@
   </head>
   <body>
     <h1>Quiz on Important Facts</h1>
-    <div class="quiz-container">
-      <div id="quiz"></div>
-    </div>
-    <button id="previous">Previous Question</button>
-    <button id="next">Next Question</button>
-    <button id="submit">Submit Quiz</button>
-    <div id="results"></div>
+    <form class="form">
+      <input class="name" type="text" name="name" placeholder="Введите имя" required />
+    </form>
+    
+    <section class="quiz-wrap">
+      <div class="quiz-container">
+        <div id="quiz"></div>
+      </div>
+      <button id="previous">Previous Question</button>
+      <button id="next">Next Question</button>
+      <button id="submit">Submit Quiz</button>
+      <button id="restart">Restart</button>
+      <div id="results"></div>
+    </section>
   </body>
 </html>
