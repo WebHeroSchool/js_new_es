@@ -1,12 +1,14 @@
 class Game {
 
-  constructor() {
+  constructor(name, url) {
+    this.name = name;
+    this.url = url;
+    this.quizName = document.querySelector('.name');
     this.quizContainer = document.getElementById('quiz');
     this.resultsContainer = document.getElementById('results');
     this.quiz = document.querySelector('.quiz-wrap');
     this.form = document.querySelector('.form');
-    this.name = document.querySelector('.name');
-
+    this.input = document.querySelector('.input');
     this.previousButton = document.getElementById("previous");
     this.nextButton = document.getElementById("next");
     this.submitButton = document.getElementById('submit');
@@ -16,7 +18,7 @@ class Game {
   }
 
   getQuestions() {
-    fetch('https://opentdb.com/api.php?amount=10&category=10&difficulty=easy&type=multiple')
+    fetch(this.url)
       .then(res => res.json())
       .then(json => {
         json.results.forEach(item => {
@@ -50,14 +52,14 @@ class Game {
 
   validation = (event) => {
     let regex = /^[А-ЯЁ][а-яё]{1,9}$/;
-    this.name.classList.remove('error');
+    this.input.classList.remove('error');
 
-    if(!regex.test(this.name.value)) {
+    if(!regex.test(this.input.value)) {
       event.preventDefault();
-      this.name.classList.add('error');
+      this.input.classList.add('error');
       this.error.innerHTML = 'Please enter correct name';
-      this.name.parentElement.insertBefore(this.error, this.name);
-      this.name.value = '';
+      this.input.parentElement.insertBefore(this.error, this.input);
+      this.input.value = '';
     }
     else {
       event.preventDefault();
@@ -69,6 +71,7 @@ class Game {
   buildQuiz(){
     this.error = document.createElement('div');
     this.error.className = 'error-block';
+    this.quizName.innerText += `: ${this.name}`
     const output = [];
 
     this.questions.forEach(
@@ -220,6 +223,6 @@ class Game {
   }
 }
 
-let game = new Game();
+let game = new Game('Books', 'https://opentdb.com/api.php?amount=10&category=10&difficulty=easy&type=multiple');
 game.getQuestions();
 game.addListeners();
