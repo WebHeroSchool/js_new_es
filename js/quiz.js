@@ -67,7 +67,7 @@ class Game {
   }
 
   validation = (event) => {
-    let regex = /^[А-ЯЁA-Z][а-яёa-z]{1,9}$/;
+    let regex = /^[А-яЁёA-z]{2,9}$/;
     this.input.classList.remove('error');
 
     if(!regex.test(this.input.value)) {
@@ -198,24 +198,34 @@ class Game {
     let answers = this.questions[this.currentSlide].answers;
     console.log(answers);
     let correctAnswer = this.questions[this.currentSlide].correctAnswer;
-    console.log(correctAnswer);
+    console.log('correctAnswer', correctAnswer);
     // delete answers[correctAnswer];
     // let incorrectAnswer = [];
     // console.log(answers);
 
     if (hint === 'fifty') {
-      let random = this.getRandomAnswer();
-      console.log(random);
+      let random;
+
       let num = 0;
+
+
       while (num < 2) {
-        if (random !== correctAnswer) {
-          // const selector = `input[name=question-${this.currentSlide}][value=${random}]`;
-          const selector = `input[name=question-${this.currentSlide}][value='${random}']`;
-          document.querySelector(selector).closest('li').remove();
-          delete answers[random];
-          num++
-          console.log(num)
-        }
+        random = this.getRandomAnswer();
+        console.log('random', random)
+
+
+          console.log('false', random)
+          if (random != correctAnswer && random in this.questions[this.currentSlide].answers) {
+            // const selector = `input[name=question-${this.currentSlide}][value=${random}]`;
+            const selector = `input[name=question-${this.currentSlide}][value='${random}']`;
+            document.querySelector(selector).closest('li').remove();
+            delete answers[random];
+            num++;
+            console.log('num', num)
+          }
+
+
+
       }
 
     }
