@@ -15,15 +15,23 @@ class Game {
     this.nextButton = document.getElementById("next");
     this.submitButton = document.getElementById('submit');
     this.restartButton = document.getElementById("restart");
+    this.fifty =  document.querySelector('.fifty');
+    this.call =  document.querySelector('.call');
+    this.audience =  document.querySelector('.audience');
+    this.numOfResponses = 4;
     this.player = '';
     this.currentSlide = 0;
     this.questions = [];
-    this.sums = [100, 200, 300, 500, 1000, 2000, 3000, 5000, 100000, 25000, 50000, 100000, 200000, 500000, 1000000];
+    this.sums = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
     this.currentWin = 0;
     this.winningAmount = 0;
     this.timerId = 0;
     this.timerNext = 0;
   }
+
+  getRandomAnswer() {
+    return Math.floor(Math.random() * this.numOfResponses)
+  };
 
   getQuestions() {
     fetch(this.url)
@@ -40,14 +48,15 @@ class Game {
             questionForm.answers[i] = currentAnswer;
           });
 
-          let correctNumber = Math.floor(Math.random() * 4);
+
+          let correctNumber = this.getRandomAnswer();
           let temp = questionForm.answers[correctNumber];
 
           questionForm.answers[correctNumber] = correctAnswer;
           if (temp !== undefined) {
-            questionForm.answers[4] = temp;
+            questionForm.answers[this.numOfResponses - 1] = temp;
           }
-          questionForm.correctAnswer = correctNumber;
+          questionForm.correctAnswer = correctNumber.toString();
           this.questions.push(questionForm);
         });
 
@@ -78,7 +87,8 @@ class Game {
   };
 
   buildQuiz(){
-    this.nextButton.disabled = true;
+    // this.nextButton.disabled = true;
+    // this.nextButton.style.opacity = '0.8';
     this.error = document.createElement('div');
     this.error.className = 'error-block';
     this.quizName.innerText += `: ${this.name}`;
@@ -157,8 +167,8 @@ class Game {
     const radioBtns = slides[this.currentSlide].querySelectorAll('INPUT');
 
     if (!Array.from(radioBtns).every(isCheked)) {
-      console.log(false)
       this.nextButton.disabled = true;
+      this.nextButton.style.opacity = '0.7';
     }
 
 
@@ -168,22 +178,10 @@ class Game {
     this.currentWin = this.sums[this.currentSlide];
     this.sum.innerText = `Winning amount: ${this.currentWin}`;
 
-    // if(this.currentSlide === 0){
-    //   this.previousButton.style.display = 'none';
-    // }
-    // else{
-    //   this.previousButton.style.display = 'inline-block';
-    // }
-
     if(this.currentSlide === slides.length - 1) {
       this.nextButton.style.display = 'none';
-      this.submitButton.style.display = 'inline-block';
-      // if (!this.resultsContainer.innerHTML) {
-      //   this.submitButton.style.display = 'inline-block';
-      //   // }
       } else {
         this.nextButton.style.display = 'inline-block';
-        this.submitButton.style.display = 'none';
       }
     console.log(this.questions[this.currentSlide].correctAnswer);
     this.timer()
@@ -196,9 +194,37 @@ class Game {
     this.showSlide(this.currentSlide + 1);
   };
 
-  // showPreviousSlide = () => {
-  //   this.showSlide(this.currentSlide - 1);
-  // };
+  getHint = (hint) => {
+    let answers = this.questions[this.currentSlide].answers;
+    console.log(answers);
+    let correctAnswer = this.questions[this.currentSlide].correctAnswer;
+    console.log(correctAnswer);
+    // delete answers[correctAnswer];
+    // let incorrectAnswer = [];
+    // console.log(answers);
+
+    if (hint === 'fifty') {
+      let random = this.getRandomAnswer();
+      console.log(random);
+      let num = 0;
+      while (num < 2) {
+        if (random !== correctAnswer) {
+          // const selector = `input[name=question-${this.currentSlide}][value=${random}]`;
+          const selector = `input[name=question-${this.currentSlide}][value='${random}']`;
+          document.querySelector(selector).closest('li').remove();
+          delete answers[random];
+          num++
+          console.log(num)
+        }
+      }
+
+    }
+
+  };
+
+  getHintFifty = () => {
+    this.getHint('fifty')
+  };
 
   checkResult = (e) => {
     const tar = e.target;
@@ -208,22 +234,20 @@ class Game {
     const slides = document.querySelectorAll(".slide");
     const radioBtns = slides[this.currentSlide].querySelectorAll('INPUT');
     if (Array.from(radioBtns).some(isCheked)) {
-      console.log(true)
       this.nextButton.disabled = false;
+      this.nextButton.style.opacity = '1';
     }
 
     if(tar.tagName === 'INPUT') {
       const questionNumber = tar.name.split('-')[1];
       console.log(questionNumber);
       const userAnswer = tar.value;
-      const isCorrect = this.questions[questionNumber].correctAnswer == userAnswer;
+      const isCorrect = this.questions[questionNumber].correctAnswer === userAnswer;
 
       if(isCorrect) {
         tar.parentNode.style.color = 'limegreen';
         clearInterval(this.timerId);
         // this.showNextSlide();
-        console.log(this.currentSlide);
-        console.log(this.questions.length);
 
         if (this.currentSlide !== this.questions.length - 1) {
           this.timerNext = setTimeout(() => this.showNextSlide(), 5000);
@@ -235,17 +259,16 @@ class Game {
       } else {
         tar.parentNode.style.color = 'orangered';
         this.nextButton.style.disabled = 'none';
-        this.submitButton.style.display = 'inline-block';
+        // this.submitButton.style.display = 'inline-block';
         this.time.style.opacity = '0';
-        setTimeout(() => this.showResults(), 20000);
+        this.nextButton.disabled = true;
+        this.nextButton.style.opacity = '0.7';
+        setTimeout(() => this.showResults(), 10000);
       }
 
       const radioButtons = e.currentTarget.querySelectorAll('.answers input');
       radioButtons.forEach(button => button.setAttribute('disabled', true));
     }
-
-
-
   };
 
   setAnswerHandler() {
@@ -255,18 +278,18 @@ class Game {
   }
 
   showResults = () => {
-    const answerContainers = this.quizContainer.querySelectorAll('.answers');
-    let numCorrect = 0;
+    // const answerContainers = this.quizContainer.querySelectorAll('.answers');
+    // let numCorrect = 0;
 
-    this.questions.forEach((currentQuestion, questionNumber) => {
-      const answerContainer = answerContainers[questionNumber];
-      const selector = `input[name=question${questionNumber}]:checked`;
-      const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-
-      if (userAnswer == currentQuestion.correctAnswer) {
-        numCorrect++;
-      }
-    });
+    // this.questions.forEach((currentQuestion, questionNumber) => {
+    //   const answerContainer = answerContainers[questionNumber];
+    //   const selector = `input[name=question${questionNumber}]:checked`;
+    //   const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+    //
+    //   if (userAnswer === currentQuestion.correctAnswer) {
+    //     numCorrect++;
+    //   }
+    // });
     this.quiz.style.display = 'none';
     this.resultsContainer.innerHTML = `${this.player}, game over! Your winnings: ${this.winningAmount}`;
     this.restartButton.style.display = 'inline-block';
@@ -282,9 +305,16 @@ class Game {
     // this.previousButton.addEventListener("click", this.showPreviousSlide);
     this.nextButton.addEventListener("click", this.showNextSlide);
     this.restartButton.addEventListener("click", this.restart);
+    this.fifty.addEventListener("click", this.getHintFifty);
   }
 }
 
 let game = new Game('Books', 'https://opentdb.com/api.php?amount=15&category=10&difficulty=easy&type=multiple');
 game.getQuestions();
 game.addListeners();
+
+
+
+
+//todo: подсказки
+//todo: по кнопке "завершить игру" забрать выигранное
