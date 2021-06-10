@@ -2,25 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz</title>
+  <title>Who Wants to Be a Millionaire</title>
   <script src="js/quiz.js" defer></script>
   <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-<h1 class="name">Quiz</h1>
+<h1 class="name">Who Wants to Be a Millionaire</h1>
 <form class="form">
-  <input class="input" type="text" name="name" placeholder="Введите имя" required />
+  <input class="input" type="text" name="name" placeholder="Enter your name" required />
+  <button>Start game!</button>
 </form>
 
 <section class="quiz-wrap">
   <div class="quiz-container">
+    <div class='time'></div>
+    <div class='sum'></div>
     <div id="quiz"></div>
   </div>
-  <button id="previous">Previous Question</button>
-  <button id="next">Next Question</button>
-  <button id="submit">Submit Quiz</button>
-  <button id="restart">Restart</button>
-  <div id="results"></div>
+<!--  <button id="previous">Previous Question</button>-->
+  <button id="next">Accept</button>
+  <button id="submit">Finish the game</button>
+
 </section>
+<div id="results"></div>
+<button id="restart">Start new game!</button>
 </body>
 </html>

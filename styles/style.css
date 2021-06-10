@@ -18,11 +18,41 @@ h1{
 }
 
 .form {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 30px auto;
+}
+
+.input {
+  height: 2em;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.quiz-container{
+  position: relative;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .quiz-wrap {
   display: none;
+}
+
+#quiz {
+  position: relative;
+  height: 250px;
+}
+
+.time {
+  margin-bottom: 25px;
+  height: 1em;
+}
+
+.sum {
+  margin-bottom: 25px;
 }
 
 .question{
@@ -66,11 +96,9 @@ button:hover{
   opacity: 1;
   z-index: 2;
 }
-.quiz-container{
-  position: relative;
-  height: 250px;
-  margin-top: 40px;
-  margin-bottom: 20px;
+
+#results {
+  margin: 25px auto;
 }
 
 #restart {
