@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
   <title>Who Wants to Be a Millionaire</title>
   <script src="js/quiz.js" defer></script>
   <link rel="stylesheet" href="styles/style.css">
@@ -12,24 +13,23 @@
   <input class="input" type="text" name="name" placeholder="Enter your name" required />
   <button>Start game!</button>
 </form>
-
-<section class="quiz-wrap">
+<section class="game-wrap">
+  <section class="winList"></section>
   <div class="quiz-container">
     <div class='time'></div>
     <div class='sum'></div>
-    <div id="quiz"></div>
+    <div class="quiz"></div>
+    <button class="next">Accept</button>
+    <button class="submit">Take the win</button>
   </div>
-<!--  <button id="previous">Previous Question</button>-->
-  <button id="next">Accept</button>
-  <button id="submit">Finish the game</button>
   <div class="hints">
+    <div class='currentWin'>Current win:</div>
     <button class="fifty">50:50</button>
     <button class="call">Phone A Friend</button>
     <button class="audience">Ask the Audience</button>
   </div>
-
 </section>
-<div id="results"></div>
-<button id="restart">Start new game!</button>
+<div class="results"></div>
+<button class="restart">Start new game!</button>
 </body>
 </html>
