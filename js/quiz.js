@@ -13,11 +13,18 @@ class Game {
     this.quiz = document.querySelector('.quiz');
     this.nextButton = document.querySelector(".next");
     this.submitButton = document.querySelector('.submit');
+    this.currentWinContainer = document.querySelector('.currentWin');
     this.fifty =  document.querySelector('.fifty');
     this.call =  document.querySelector('.call');
     this.audience =  document.querySelector('.audience');
     this.resultsContainer = document.querySelector('.results');
     this.restartButton = document.querySelector(".restart");
+    this.overlay = document.querySelector(".overlay");
+    this.modal = document.querySelector(".modal");
+    this.modalContent = document.querySelector(".modal-text");
+    this.modalButton = document.querySelector(".modal button");
+    this.preloaderPhone = document.querySelector(".container-phone");
+    this.preloaderCircles = document.querySelector(".container-circles");
     this.numOfResponses = 4;
     this.player = '';
     this.currentSlide = 0;
@@ -27,6 +34,7 @@ class Game {
     this.winningAmount = 0;
     this.timerId = 0;
     this.timerNext = 0;
+    this.isCorrect = 0;
   }
 
   getRandomAnswer(num = this.numOfResponses) {
@@ -99,7 +107,6 @@ class Game {
       if (i % 5 === 4) {
         winItem.classList.add('guaranteed')
       }
-      console.log(this.winList);
       this.winList.appendChild(winItem );
     });
 
@@ -170,6 +177,10 @@ class Game {
     this.currentSlide = n;
     this.currentWin = this.sums[this.currentSlide];
     this.sum.innerText = `Winning amount: ${this.currentWin}`;
+    if (this.currentSlide % 5 === 4) {
+      this.sum.innerText = `Winning amount: ${this.currentWin} - guaranteed level`;
+
+    }
     console.log('correctAnswer', this.questions[this.currentSlide].correctAnswer);
     this.timer()
   };
@@ -183,6 +194,9 @@ class Game {
   };
 
   getHint = (hint) => {
+    this.overlay.classList.add('active');
+    this.modal.classList.add('active');
+
     let answers = this.questions[this.currentSlide].answers;
     console.log(answers);
     let correctAnswer = this.questions[this.currentSlide].correctAnswer;
@@ -202,34 +216,44 @@ class Game {
     }
 
     if (hint === this.call) {
+      this.preloaderPhone.style.display = 'block';
       random = this.getRandomAnswer(2);
-      if (random === 1) {
-        console.log(true);
-        alert(`Friend's answer: ${this.questions[this.currentSlide].answers[correctAnswer]}`)
-      } else {
-        console.log(false);
-        while (num < 1) {
-          random = this.getRandomAnswer().toString();
-          if (random !== correctAnswer && answers[random] !== undefined) {
-            alert(`Friend's answer: ${this.questions[this.currentSlide].answers[random]}`);
-            num++;
+      setTimeout(() => {
+        this.preloaderPhone.style.display = 'none';
+        this.modalButton.style.display = 'block';
+        if (random === 1) {
+          this.modalContent.innerText = `Friend's answer: ${this.questions[this.currentSlide].answers[correctAnswer]}`
+        } else {
+          while (num < 1) {
+            random = this.getRandomAnswer().toString();
+            if (random !== correctAnswer && answers[random] !== undefined) {
+              this.modalContent.innerText = `Friend's answer: ${this.questions[this.currentSlide].answers[random]}`;
+              num++;
+            }
           }
         }
-      }
+      }, 3000);
+
     }
 
     if (hint === this.audience) {
-      while (num < 1) {
-        random = this.getRandomAnswer().toString();
-        if (answers[random] !== undefined) {
-          alert(`Audience selection: ${this.questions[this.currentSlide].answers[random]}`);
-          num++
+      this.preloaderCircles.style.display = 'flex';
+      setTimeout(() => {
+        this.preloaderCircles.style.display = 'none';
+        this.modalButton.style.display = 'block';
+        while (num < 1) {
+          random = this.getRandomAnswer().toString();
+          if (answers[random] !== undefined) {
+            this.modalContent.innerText = `Audience selection: ${this.questions[this.currentSlide].answers[random]}`;
+            num++
+          }
         }
-      }
+      }, 3000);
+
     }
 
-    hint.disabled  = true;
-    hint.style.opacity = '0.7';
+    // hint.disabled  = true;
+    // hint.style.opacity = '0.7';
   };
 
   getHintFifty = () => {
@@ -263,9 +287,9 @@ class Game {
     if(tar.tagName === 'INPUT') {
       const questionNumber = tar.name.split('-')[1];
       const userAnswer = tar.value;
-      const isCorrect = this.questions[questionNumber].correctAnswer === userAnswer;
+      this.isCorrect = this.questions[questionNumber].correctAnswer === userAnswer;
 
-      if(isCorrect) {
+      if(this.isCorrect) {
         tar.parentNode.style.color = 'limegreen';
         clearInterval(this.timerId);
 
@@ -274,7 +298,8 @@ class Game {
         }
 
         if (this.currentSlide % 5 === 4) {
-          this.winningAmount = this.currentWin
+          this.winningAmount = this.currentWin;
+          this.currentWinContainer.innerText = `Current win: ${this.currentWin}`;
         }
 
       } else {
@@ -299,6 +324,9 @@ class Game {
 
   showResults = () => {
     this.quizContainer.style.display = 'none';
+    if (this.isCorrect) {
+      this.winningAmount = this.sums[this.currentSlide - 1];
+    }
     this.resultsContainer.innerHTML = `${this.player}, game over! Your winnings: ${this.winningAmount}`;
     this.restartButton.style.display = 'inline-block';
   };
@@ -315,6 +343,22 @@ class Game {
     this.fifty.addEventListener("click", this.getHintFifty);
     this.call.addEventListener("click", this.getHintCall);
     this.audience.addEventListener("click", this.getHintAudience);
+    this.modalButton.addEventListener('click', () => {
+      this.overlay.classList.remove('active');
+      this.modal.classList.remove('active');
+    });
+    document.addEventListener('click', (event) => {
+      if(
+        !event.target.closest('button') &&
+        !event.target.closest('.modal')
+        // !event.target.closest('.modal button') &&
+        // !event.target.closest('.form')
+        // !event.target.closest('.burger')
+      ) {
+        this.overlay.classList.remove('active');
+        this.modal.classList.remove('active');
+      }
+    });
   }
 }
 
@@ -323,4 +367,4 @@ game.getQuestions();
 game.addListeners();
 
 
-//todo: по кнопке "завершить игру" забрать выигранное
+//todo: адаптив, стили модалки

@@ -168,3 +168,225 @@ button:hover{
 .error-block {
   color: orangered;
 }
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal {
+  position: fixed;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f8f6f0;
+  max-width: 600px;
+  width: 100%;
+  height: 400px;
+  max-height: 95%;
+  z-index: 45;
+  overflow: auto;
+  padding: 20px;
+}
+
+.modal button {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+
+.container-phone {
+  display: none;
+  width: 100%;
+  position: relative;
+}
+
+/*call phone*/
+.call-phone {
+  position: fixed;
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  top: 20%;
+  left: 20%;
+}
+.call-phone__circle {
+  width: 160px;
+  height: 160px;
+  top: 20px;
+  left: 20px;
+  margin: 0;
+  position: absolute;
+  background-color: transparent;
+  border-radius: 100%;
+  border: 2px solid rgba(82,125,168,0.4);
+  animation: call-phone__circle-anim 1.2s infinite ease-in-out;
+  transition: all 0.5s;
+  vertical-align: baseline;
+}
+
+@keyframes call-phone__circle-anim{
+  0%{transform:rotate(0deg) scale(0.5) skew(1deg);
+    opacity:.1  }
+  30%{transform:rotate(0deg) scale(0.7) skew(1deg);
+    opacity:.5  }
+  100%{transform:rotate(0deg) scale(1) skew(1deg);
+    opacity:.1  }
+}
+.call-phone__circle-fill {
+  background-color: rgba(82,125,168,1);
+  opacity: 0.75;
+  width: 100px;
+  height: 100px;
+  top: 50px;
+  left: 50px;
+  position: absolute;
+  border-radius: 100%;
+  opacity: 0.1;
+  animation: call-phone__circle-fill-anim 2.3s infinite ease-in-out;
+  transition: all 0.5s;
+}
+
+@keyframes call-phone__circle-fill-anim{
+  0%{transform:rotate(0deg) scale(0.7) skew(1deg);
+    opacity:.2  }
+  50%{transform:rotate(0deg) scale(1) skew(1deg);
+    opacity:.2  }
+  100%{transform:rotate(0deg) scale(0.7) skew(1deg);opacity:.2  }
+}
+.call-phone__circle-img {
+  position: relative;
+  background-color: rgba(82,125,168,0.1);
+  width: 60px;
+  height: 60px;
+  top: 65px;
+  left: 65px;
+  position: absolute;
+  border: 5px solid #279;;
+  border-radius: 50%;
+  border-radius: 100%;
+  opacity: 0.7;
+  animation: call-phone__circle-img-anim 1s infinite ease-in-out;
+}
+@keyframes call-phone__circle-img-anim{
+  0%{transform:rotate(0deg) scale(1) skew(1deg)  }
+  10%{transform:rotate(-25deg) scale(1) skew(1deg)  }
+  20%{transform:rotate(25deg) scale(1) skew(1deg)  }
+  30%{transform:rotate(-25deg) scale(1) skew(1deg)  }
+  40%{transform:rotate(25deg) scale(1) skew(1deg)  }
+  100%,50%{transform:rotate(0deg) scale(1) skew(1deg)  }
+}
+
+.icon-phone {
+  position: absolute;
+  z-index: 30;
+  font-size: 36px;
+  color: #279;;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px 0 5px 0;
+}
+
+
+
+
+
+.container-circles {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  /*height: 100vh;*/
+  overflow: hidden;
+}
+
+
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle:before {
+   content: "";
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   opacity: 0.7;
+   animation: scale 2s infinite
+   cubic-bezier(0, 0, 0.49, 1.02);
+}
+
+.circle-1 {
+  background-color: #49b8e5;
+}
+
+.circle-1:before {
+  background-color: #49b8e5;
+  animation-delay: 200ms;
+}
+
+.circle-2 {
+  background-color: #1e98d4;
+}
+
+.circle-2:before {
+  background-color: #1e98d4;
+  animation-delay: 400ms;
+}
+
+.circle-3 {
+  background-color: #2a92d0;
+}
+
+.circle-3:before {
+  background-color: #2a92d0;
+  animation-delay: 600ms;
+}
+
+.circle-4 {
+  background-color: #3a88c8;
+}
+
+.circle-4:before {
+  background-color: #3a88c8;
+  animation-delay: 800ms;
+}
+
+.circle-5 {
+  background-color: #507cbe;
+}
+
+.circle-5:before {
+  background-color: #507cbe;
+  animation-delay: 1000ms;
+}
+
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50%, 75% {
+    transform: scale(2.5);
+  }
+  78%, 100% {
+    opacity: 0;
+  }
+}
