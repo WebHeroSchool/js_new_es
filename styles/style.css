@@ -1,24 +1,23 @@
 @import url(https://fonts.googleapis.com/css?family=Work+Sans:300,600);
 
 body{
-  max-width: 1440px;
   min-width: 320px;
   margin: 0 auto;
+  text-align: center;
   font-size: 20px;
   font-family: 'Work Sans', sans-serif;
-  color: rgba(0, 0, 0, 0.87);;
   font-weight: 300;
-  text-align: center;
+  color: rgba(0, 0, 0, 0.87);;
   background-color: #f8f6f0;
 }
 
 h1{
-  font-weight: 300;
   margin: 0;
   padding: 10px;
   font-size: 20px;
-  background-color: #444;
+  font-weight: 300;
   color: #fff;
+  background-color: #444;
 }
 
 .form {
@@ -30,35 +29,32 @@ h1{
 
 .input {
   height: 2em;
+  margin-bottom: 20px;
   padding: 5px;
   border-radius: 5px;
-  margin-bottom: 20px;
 }
 
 .game-wrap {
-  display: none;
   flex-direction: row;
+  display: none;
+  max-width: 1440px;
+  margin: 0 auto;
   padding-top: 25px;
 }
 
 .winList {
-  /*display: flex;*/
   flex-basis: 20%;
   margin: 0 auto;
-  /*justify-content: center;*/
-  /*align-items: center;*/
-  /*padding-top: 25px;;*/
 }
 
 .win {
+  width: 150px;
+  margin: 0 auto 10px;
   border: 1px solid #279;
   border-radius: 20px;
-  margin: 0 auto 10px;
-  width: 150px;
 }
 
 .win.guaranteed {
-  /*border: 1px solid rgb(255, 215, 0);*/
   background: rgb(255, 215, 0);
 }
 
@@ -72,39 +68,32 @@ h1{
 }
 
 .quiz-container{
-  min-height: 550px;
   display: flex;
   flex-direction: column;
   flex-basis: 60%;
   justify-content: space-between;
+  min-height: 550px;
   position: relative;
   padding: 0 5%;
-  /*margin-top: 25px;*/
-  margin-bottom: 20px;
 }
 
 .time {
-  margin-bottom: 25px;
   height: 1em;
+  margin-bottom: 25px;
 }
 
 .sum {
-  color: #841d29;
-  font-weight: bold;
   margin-bottom: 25px;
+  font-weight: bold;
+  color: #841d29;
 }
 
 .quiz {
   position: relative;
-  /*min-height: 290px;*/
-  /*margin-bottom: 20px;*/
   overflow: hidden;
 }
 
 .slide{
-  /*position: absolute;*/
-  /*left: 0;*/
-  /*top: 0;*/
   display: none;
   width: 100%;
   z-index: 1;
@@ -113,20 +102,20 @@ h1{
 }
 
 .active-slide{
+  display: block;
   opacity: 1;
   z-index: 2;
-  display: block;
 }
 
 .question{
-  font-size: 30px;
   margin-bottom: 10px;
+  font-size: 30px;
 }
 
 .answers {
-  margin-bottom: 20px;
-  text-align: left;
   display: inline-block;
+  text-align: left;
+  margin-bottom: 20px;
 }
 
 .answers label {
@@ -143,18 +132,16 @@ h1{
   flex-direction: column;
 }
 
-
 button{
+  margin-bottom: 20px;
+  padding: 20px;
   font-family: 'Work Sans', sans-serif;
   font-size: 22px;
-  background-color: #279;
   color: #fff;
   border: 0;
   border-radius: 3px;
-  padding: 20px;
+  background-color: #279;
   cursor: pointer;
-  margin-bottom: 20px;
-  /*max-width: 500px;*/
 }
 
 button:hover{
@@ -178,9 +165,9 @@ button:hover{
 }
 
 .currentWin {
-  color: #841d29;
-  font-weight: bold;
   margin-bottom: 50px;
+  font-weight: bold;
+  color: #841d29;
 }
 
 .label {
@@ -206,47 +193,44 @@ button:hover{
 
 .overlay {
   display: none;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  z-index: 30;
   background-color: rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%);
+  z-index: 30;
 }
 
 .modal {
-  position: fixed;
   display: none;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #f8f6f0;
   max-width: 300px;
   width: 100%;
   height: 200px;
   max-height: 95%;
+  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  background-color: #f8f6f0;
+  transform: translate(-50%, -50%);
   z-index: 45;
   overflow: auto;
-  padding: 20px;
 }
 
 .modal button {
-  display: none;
-  margin: 0 auto;
   width: 150px;
-  padding: 15px;
+  display: none;
+  margin: 30px auto 0;
+  padding: 10px;
   border-radius: 5px;
 }
 
-.modal-text {
-  margin-bottom: 45px;
-}
-
 .modal-text h4 {
-  color: #841d29;
   margin: 15px;
+  color: #841d29;
 }
 
 .active {
@@ -256,32 +240,31 @@ button:hover{
 
 .container-phone {
   display: none;
-  /*width: 100%;*/
   position: relative;
 }
 
 /*call phone*/
 .call-phone {
-  position: fixed;
-  cursor: pointer;
   width: 200px;
   height: 200px;
-  /*top: 20%;*/
-  left: 20%;
+  position: fixed;
+  left: 18%;
+  top: 0;
+  cursor: pointer;
 }
 .call-phone__circle {
   width: 160px;
   height: 160px;
+  margin: 0;
+  vertical-align: baseline;
+  position: absolute;
   top: 20px;
   left: 20px;
-  margin: 0;
-  position: absolute;
+  border: 2px solid rgba(82,125,168,0.4);
   background-color: transparent;
   border-radius: 100%;
-  border: 2px solid rgba(82,125,168,0.4);
   animation: call-phone__circle-anim 1.2s infinite ease-in-out;
   transition: all 0.5s;
-  vertical-align: baseline;
 }
 
 @keyframes call-phone__circle-anim{
@@ -292,15 +275,15 @@ button:hover{
   100%{transform:rotate(0deg) scale(1) skew(1deg);
     opacity:.1  }
 }
+
 .call-phone__circle-fill {
-  background-color: rgba(82,125,168,1);
-  opacity: 0.75;
   width: 100px;
   height: 100px;
+  position: absolute;
   top: 50px;
   left: 50px;
-  position: absolute;
   border-radius: 100%;
+  background-color: rgba(82,125,168,1);
   opacity: 0.1;
   animation: call-phone__circle-fill-anim 2.3s infinite ease-in-out;
   transition: all 0.5s;
@@ -313,20 +296,20 @@ button:hover{
     opacity:.2  }
   100%{transform:rotate(0deg) scale(0.7) skew(1deg);opacity:.2  }
 }
+
 .call-phone__circle-img {
-  position: relative;
-  background-color: rgba(82,125,168,0.1);
   width: 60px;
   height: 60px;
+  position: absolute;
   top: 65px;
   left: 65px;
-  position: absolute;
   border: 5px solid #279;;
-  border-radius: 50%;
   border-radius: 100%;
+  background-color: rgba(82,125,168,0.1);
   opacity: 0.7;
   animation: call-phone__circle-img-anim 1s infinite ease-in-out;
 }
+
 @keyframes call-phone__circle-img-anim{
   0%{transform:rotate(0deg) scale(1) skew(1deg)  }
   10%{transform:rotate(-25deg) scale(1) skew(1deg)  }
@@ -338,37 +321,32 @@ button:hover{
 
 .icon-phone {
   position: absolute;
-  z-index: 30;
-  font-size: 36px;
-  color: #279;;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   padding: 5px 0 5px 0;
+  font-size: 36px;
+  color: #279;;
+  transform: translate(-50%, -50%);
+  z-index: 30;
 }
 
-
-
-
-
+/*audience preloader*/
 .container-circles {
+  height: 100%;
   display: none;
   justify-content: center;
   align-items: center;
-  height: 100%;
   overflow: hidden;
 }
-
-
 
 .circle {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  margin: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 7px;
+  border-radius: 50%;
 }
 
 .circle:before {
@@ -377,8 +355,7 @@ button:hover{
    height: 20px;
    border-radius: 50%;
    opacity: 0.7;
-   animation: scale 2s infinite
-   cubic-bezier(0, 0, 0.49, 1.02);
+   animation: scale 2s infinite cubic-bezier(0, 0, 0.49, 1.02);
 }
 
 .circle-1 {
@@ -426,7 +403,6 @@ button:hover{
   animation-delay: 1000ms;
 }
 
-
 @keyframes scale {
   0% {
     transform: scale(1);
@@ -459,35 +435,31 @@ button:hover{
 
 @media (max-width: 900px) {
   .winList {
-    position: absolute;
     width: 180px;
     left: -180px;
+    position: absolute;
     padding-top: 10px;
-    background: #f8f6f0;;
-    transition: left, 0.5s cubic-bezier(0, 0, 1, 1);
-    z-index: 5;
     border: 1px solid #279;
     border-radius: 10px;
     box-sizing: border-box;
+    background: #f8f6f0;;
+    transition: left, 0.5s cubic-bezier(0, 0, 1, 1);
+    z-index: 5;
   }
 
-  /*.winList:hover {*/
-  /*  left: 0;*/
-  /*}*/
-
   .label {
+    width: 35px;
+    height: 40px;
     display: block;
     position: absolute;
     left: 0;
     top: 110px;
-    background: #279;
-    width: 35px;
-    height: 40px;
     padding: 5px;
     box-sizing: border-box;
     font-size: 1.5em;
     color: #fff;
     border-radius: 0 5px 5px 0;
+    background: #279;
     z-index: 5;
     transition: left, 0.5s cubic-bezier(0, 0, 1, 1);
     cursor: pointer;
@@ -508,8 +480,8 @@ button:hover{
   }
 
   .quiz-container {
-    padding: 0 10px 0 20px;
     min-height: 510px;
+    padding: 0 10px 0 20px;
   }
 
   .sum {
@@ -525,8 +497,8 @@ button:hover{
   }
 
   button {
-    font-size: 18px;
     padding: 15px 10px;
+    font-size: 18px;
   }
 
   .hints button {
@@ -535,29 +507,30 @@ button:hover{
 }
 
 @media (max-width: 530px) {
+  h1 {
+    padding: 10px 0;
+  }
   .game-wrap {
     flex-direction: column;
   }
-
-
 
   .currentWinText {
     display: none;
   }
 
   .currentWinNum {
+    width: auto;
+    min-width: 90px;
+    height: 40px;
     display:inline-block;
     position: absolute;
     top: 60px;
-    width: auto;
-    background: #279;
-    min-width: 90px;
-    height: 40px;
-    border-radius: 0 5px 5px 0;
+    left: 0;
     padding: 9px;
+    border-radius: 0 5px 5px 0;
+    background: #279;
     color: #fff;
     box-sizing: border-box;
-    left: 0;
   }
 
   .quiz-container {
@@ -599,7 +572,7 @@ button:hover{
   }
 }
 
-@media (max-width: 365px) {
+@media (max-width: 345px) {
   .currentWinNum {
     top: 85px
   }
@@ -611,11 +584,4 @@ button:hover{
   .hints {
     padding: 10px;
   }
-
-  /*.label {*/
-  /*  top: 205px*/
-  /*}*/
 }
-
-
-

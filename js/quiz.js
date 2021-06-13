@@ -1,5 +1,4 @@
 class Game {
-
   constructor(name, url) {
     this.name = name;
     this.url = url;
@@ -42,7 +41,6 @@ class Game {
       audience: false,
     };
     this.switcher = 0;
-    console.log(this.label)
   }
 
   getRandomAnswer(num = this.numOfResponses) {
@@ -170,6 +168,7 @@ class Game {
   showSlide = (n) => {
     let winItem = Array.from(document.querySelectorAll('.win'));
     this.handleDisabled(false);
+
     if (this.isUsed.fifty) {
       this.fifty.disabled = false;
     }
@@ -204,17 +203,12 @@ class Game {
     winItem.forEach((item, i) => {
       if (i === this.currentSlide) {
         winItem[i].classList.add('checked');
-        // winItem[i - 1].classList.remove('checked');
-        // if (i === 0) {
-        //   winItem[i].classList.add('checked');
-        //   winItem[i + 1].classList.remove('checked');
-        // }
         if (i !== 0) {
           winItem[i - 1].classList.remove('checked');
         }
       }
     });
-    console.log('correctAnswer', this.questions[this.currentSlide].correctAnswer);
+
     this.timer()
   };
 
@@ -240,11 +234,7 @@ class Game {
   getHint = (hint) => {
     this.modalButton.style.display = 'none';
     this.modalContent.innerText = '';
-    // this.overlay.classList.add('active');
-    // this.modal.classList.add('active');
-
     let answers = this.questions[this.currentSlide].answers;
-    console.log(answers);
     let correctAnswer = this.questions[this.currentSlide].correctAnswer;
     let random;
     let num = 0;
@@ -260,7 +250,6 @@ class Game {
           }
       }
     }
-
     if (hint === this.call) {
       this.handleSetModal('add');
       this.preloaderCircles.style.display = 'none';
@@ -287,9 +276,7 @@ class Game {
           }
         }
       }, 2000);
-
     }
-
     if (hint === this.audience) {
       this.handleSetModal('add');
       this.preloaderPhone.style.display = 'none';
@@ -308,15 +295,11 @@ class Game {
           }
         }
       }, 2000);
-
     }
 
     hint.disabled  = true;
     hint.style.opacity = '0.7';
-    console.log(hint);
-    console.log(hint.classList.value);
     this.isUsed[hint.classList.value] = true;
-    console.log(this.isUsed[hint.classList.value]);
   };
 
   getHintFifty = () => {
@@ -347,7 +330,6 @@ class Game {
     const radioBtns = slides[this.currentSlide].querySelectorAll('INPUT');
     this.handleDisabled(true);
 
-
     if (Array.from(radioBtns).some(this.isChecked)) {
       this.nextButton.disabled = false;
       this.nextButton.style.opacity = '1';
@@ -358,11 +340,9 @@ class Game {
       const userAnswer = tar.value;
       this.isCorrect = this.questions[questionNumber].correctAnswer === userAnswer;
 
-
       if(this.isCorrect) {
         tar.parentNode.style.color = 'limegreen';
         clearInterval(this.timerId);
-
         this.currentWinContainer.innerText = this.sums[this.currentSlide];
 
         if (this.currentSlide !== this.questions.length - 1) {
@@ -380,7 +360,6 @@ class Game {
 
       } else {
         tar.parentNode.style.color = 'orangered';
-        // this.nextButton.style.disabled = 'none';
         this.time.style.opacity = '0';
         this.nextButton.style.display = 'none';
         this.submitButton.innerText = 'Finish the game';
@@ -400,9 +379,6 @@ class Game {
 
   showResults = () => {
     this.quizContainer.style.display = 'none';
-    // if (this.isCorrect) {
-    //   this.winningAmount = this.sums[this.currentSlide - 1];
-    // }
     this.resultsContainer.innerHTML = `${this.player}, game over! Your winnings: ${this.winningAmount}`;
     this.restartButton.style.display = 'inline-block';
   };
@@ -419,7 +395,6 @@ class Game {
       this.winList.style.left = '-180px';
       this.label.style.left = '0';
     }
-
   }
 
   addListeners = () => {
@@ -434,10 +409,7 @@ class Game {
       this.switcher = !this.switcher;
       this.showSidebar(this.switcher);
     });
-
     this.modalButton.addEventListener('click', () => {
-      // this.overlay.classList.remove('active');
-      // this.modal.classList.remove('active');
       this.handleSetModal('remove');
     });
     document.addEventListener('click', (event) => {
@@ -454,6 +426,3 @@ class Game {
 let game = new Game('Books', 'https://opentdb.com/api.php?amount=15&category=10&difficulty=easy&type=multiple');
 game.getQuestions();
 game.addListeners();
-
-
-//todo: адаптив, стили модалки
