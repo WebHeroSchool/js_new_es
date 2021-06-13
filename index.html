@@ -16,18 +16,24 @@
 </form>
 <section class="game-wrap">
   <section class="winList"></section>
+  <div class="label fa fa-arrow-circle-left"></div>
   <div class="quiz-container">
-    <div class='time'></div>
-    <div class='sum'></div>
-    <div class="quiz"></div>
-    <button class="next">Accept</button>
-    <button class="submit">Take the win</button>
+    <div>
+      <div class='time'></div>
+      <div class='sum'></div>
+      <div class="quiz"></div>
+    </div>
+    <div class="buttons">
+      <button class="next">Accept</button>
+      <button class="submit">Take the win</button>
+    </div>
   </div>
   <div class="hints">
-    <div class='currentWin'>Current win: 0</div>
+    <div class='currentWin'><span class='currentWinText'>Current win:</span> <span class='currentWinNum'>0</span></div>
     <button class="fifty">50:50</button>
-    <button class="call">Phone A Friend</button>
-    <button class="audience">Ask the Audience</button>
+    <button class="call">Phone <span>A Friend</span></button>
+    <button class="audience"><span>Ask the </span>Audience</button>
+    <img src="images/logo.png" width="150" height="150" alt="logo">
   </div>
 </section>
 <div class="results"></div>

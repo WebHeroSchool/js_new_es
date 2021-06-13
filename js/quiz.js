@@ -13,7 +13,7 @@ class Game {
     this.quiz = document.querySelector('.quiz');
     this.nextButton = document.querySelector(".next");
     this.submitButton = document.querySelector('.submit');
-    this.currentWinContainer = document.querySelector('.currentWin');
+    this.currentWinContainer = document.querySelector('.currentWinNum');
     this.fifty =  document.querySelector('.fifty');
     this.call =  document.querySelector('.call');
     this.audience =  document.querySelector('.audience');
@@ -25,6 +25,7 @@ class Game {
     this.modalButton = document.querySelector(".modal button");
     this.preloaderPhone = document.querySelector(".container-phone");
     this.preloaderCircles = document.querySelector(".container-circles");
+    this.label = document.querySelector(".label");
     this.numOfResponses = 4;
     this.player = '';
     this.currentSlide = 0;
@@ -35,6 +36,13 @@ class Game {
     this.timerId = 0;
     this.timerNext = 0;
     this.isCorrect = 0;
+    this.isUsed = {
+      fifty: false,
+      call: false,
+      audience: false,
+    };
+    this.switcher = 0;
+    console.log(this.label)
   }
 
   getRandomAnswer(num = this.numOfResponses) {
@@ -107,6 +115,9 @@ class Game {
       if (i % 5 === 4) {
         winItem.classList.add('guaranteed')
       }
+      if (i === this.currentSlide) {
+        winItem.classList.add('checked')
+      }
       this.winList.appendChild(winItem );
     });
 
@@ -157,9 +168,17 @@ class Game {
   };
 
   showSlide = (n) => {
-    // function isChecked(element) {
-    //   return element.checked;
-    // }
+    let winItem = Array.from(document.querySelectorAll('.win'));
+    this.handleDisabled(false);
+    if (this.isUsed.fifty) {
+      this.fifty.disabled = false;
+    }
+    if (this.isUsed.call) {
+      this.call.disabled = false;
+    }
+    if (this.isUsed.audience) {
+      this.audience.disabled = false;
+    }
 
     clearInterval(this.timerNext);
     this.time.innerText = `Time left: 60`;
@@ -177,10 +196,24 @@ class Game {
     this.currentSlide = n;
     this.currentWin = this.sums[this.currentSlide];
     this.sum.innerText = `Winning amount: ${this.currentWin}`;
+
     if (this.currentSlide % 5 === 4) {
       this.sum.innerText = `Winning amount: ${this.currentWin} - guaranteed level`;
-
     }
+
+    winItem.forEach((item, i) => {
+      if (i === this.currentSlide) {
+        winItem[i].classList.add('checked');
+        // winItem[i - 1].classList.remove('checked');
+        // if (i === 0) {
+        //   winItem[i].classList.add('checked');
+        //   winItem[i + 1].classList.remove('checked');
+        // }
+        if (i !== 0) {
+          winItem[i - 1].classList.remove('checked');
+        }
+      }
+    });
     console.log('correctAnswer', this.questions[this.currentSlide].correctAnswer);
     this.timer()
   };
@@ -193,9 +226,22 @@ class Game {
     }
   };
 
+  handleSetModal(set) {
+    if (set === 'add') {
+      this.overlay.classList.add('active');
+      this.modal.classList.add('active');
+    }
+    if (set === 'remove') {
+      this.overlay.classList.remove('active');
+      this.modal.classList.remove('active');
+    }
+  }
+
   getHint = (hint) => {
-    this.overlay.classList.add('active');
-    this.modal.classList.add('active');
+    this.modalButton.style.display = 'none';
+    this.modalContent.innerText = '';
+    // this.overlay.classList.add('active');
+    // this.modal.classList.add('active');
 
     let answers = this.questions[this.currentSlide].answers;
     console.log(answers);
@@ -216,27 +262,37 @@ class Game {
     }
 
     if (hint === this.call) {
+      this.handleSetModal('add');
+      this.preloaderCircles.style.display = 'none';
       this.preloaderPhone.style.display = 'block';
       random = this.getRandomAnswer(2);
       setTimeout(() => {
         this.preloaderPhone.style.display = 'none';
         this.modalButton.style.display = 'block';
         if (random === 1) {
-          this.modalContent.innerText = `Friend's answer: ${this.questions[this.currentSlide].answers[correctAnswer]}`
+          this.modalContent.innerHTML = `
+            <h4>Friend's answer:</h4>
+            <div>${this.questions[this.currentSlide].answers[correctAnswer]}</div>
+          `
         } else {
           while (num < 1) {
             random = this.getRandomAnswer().toString();
             if (random !== correctAnswer && answers[random] !== undefined) {
-              this.modalContent.innerText = `Friend's answer: ${this.questions[this.currentSlide].answers[random]}`;
+              this.modalContent.innerHTML = `
+                <h4>Friend's answer:</h4>
+                <div>${this.questions[this.currentSlide].answers[random]}</div>
+              `;
               num++;
             }
           }
         }
-      }, 3000);
+      }, 2000);
 
     }
 
     if (hint === this.audience) {
+      this.handleSetModal('add');
+      this.preloaderPhone.style.display = 'none';
       this.preloaderCircles.style.display = 'flex';
       setTimeout(() => {
         this.preloaderCircles.style.display = 'none';
@@ -244,16 +300,23 @@ class Game {
         while (num < 1) {
           random = this.getRandomAnswer().toString();
           if (answers[random] !== undefined) {
-            this.modalContent.innerText = `Audience selection: ${this.questions[this.currentSlide].answers[random]}`;
+            this.modalContent.innerHTML = `
+              <h4>Audience selection:</h4>
+              </div>${this.questions[this.currentSlide].answers[random]}</div>
+            `;
             num++
           }
         }
-      }, 3000);
+      }, 2000);
 
     }
 
-    // hint.disabled  = true;
-    // hint.style.opacity = '0.7';
+    hint.disabled  = true;
+    hint.style.opacity = '0.7';
+    console.log(hint);
+    console.log(hint.classList.value);
+    this.isUsed[hint.classList.value] = true;
+    console.log(this.isUsed[hint.classList.value]);
   };
 
   getHintFifty = () => {
@@ -272,11 +335,17 @@ class Game {
     return element.checked;
   }
 
+  handleDisabled(set) {
+    this.fifty.disabled = set;
+    this.call.disabled = set;
+    this.audience.disabled = set;
+  }
+
   checkResult = (e) => {
     const tar = e.target;
     const slides = document.querySelectorAll(".slide");
     const radioBtns = slides[this.currentSlide].querySelectorAll('INPUT');
-
+    this.handleDisabled(true);
 
 
     if (Array.from(radioBtns).some(this.isChecked)) {
@@ -289,26 +358,33 @@ class Game {
       const userAnswer = tar.value;
       this.isCorrect = this.questions[questionNumber].correctAnswer === userAnswer;
 
+
       if(this.isCorrect) {
         tar.parentNode.style.color = 'limegreen';
         clearInterval(this.timerId);
 
+        this.currentWinContainer.innerText = this.sums[this.currentSlide];
+
         if (this.currentSlide !== this.questions.length - 1) {
+          this.winningAmount = this.sums[this.currentSlide];
           this.timerNext = setTimeout(() => this.showNextSlide(), 5000);
+        } else {
+          this.winningAmount = this.sums[this.currentSlide + 1];
+          setTimeout(() => this.showResults(), 5000);
         }
 
         if (this.currentSlide % 5 === 4) {
           this.winningAmount = this.currentWin;
-          this.currentWinContainer.innerText = `Current win: ${this.currentWin}`;
+          this.currentWinContainer.innerText = this.currentWin;
         }
 
       } else {
         tar.parentNode.style.color = 'orangered';
-        this.nextButton.style.disabled = 'none';
+        // this.nextButton.style.disabled = 'none';
         this.time.style.opacity = '0';
         this.nextButton.style.display = 'none';
         this.submitButton.innerText = 'Finish the game';
-        setTimeout(() => this.showResults(), 10000);
+        setTimeout(() => this.showResults(), 5000);
       }
 
       const radioButtons = e.currentTarget.querySelectorAll('.answers input');
@@ -324,9 +400,9 @@ class Game {
 
   showResults = () => {
     this.quizContainer.style.display = 'none';
-    if (this.isCorrect) {
-      this.winningAmount = this.sums[this.currentSlide - 1];
-    }
+    // if (this.isCorrect) {
+    //   this.winningAmount = this.sums[this.currentSlide - 1];
+    // }
     this.resultsContainer.innerHTML = `${this.player}, game over! Your winnings: ${this.winningAmount}`;
     this.restartButton.style.display = 'inline-block';
   };
@@ -335,28 +411,41 @@ class Game {
     document.location.reload();
   }
 
+  showSidebar(option) {
+    if(option) {
+      this.winList.style.left = '0';
+      this.label.style.left = '180px';
+    } else {
+      this.winList.style.left = '-180px';
+      this.label.style.left = '0';
+    }
+
+  }
+
   addListeners = () => {
     this.form.addEventListener('submit', this.validation);
     this.submitButton.addEventListener('click', this.showResults);
-    this.nextButton.addEventListener("click", this.showNextSlide);
-    this.restartButton.addEventListener("click", this.restart);
-    this.fifty.addEventListener("click", this.getHintFifty);
-    this.call.addEventListener("click", this.getHintCall);
-    this.audience.addEventListener("click", this.getHintAudience);
+    this.nextButton.addEventListener('click', this.showNextSlide);
+    this.restartButton.addEventListener('click', this.restart);
+    this.fifty.addEventListener('click', this.getHintFifty);
+    this.call.addEventListener('click', this.getHintCall);
+    this.audience.addEventListener('click', this.getHintAudience);
+    this.label.addEventListener('click', () => {
+      this.switcher = !this.switcher;
+      this.showSidebar(this.switcher);
+    });
+
     this.modalButton.addEventListener('click', () => {
-      this.overlay.classList.remove('active');
-      this.modal.classList.remove('active');
+      // this.overlay.classList.remove('active');
+      // this.modal.classList.remove('active');
+      this.handleSetModal('remove');
     });
     document.addEventListener('click', (event) => {
       if(
         !event.target.closest('button') &&
         !event.target.closest('.modal')
-        // !event.target.closest('.modal button') &&
-        // !event.target.closest('.form')
-        // !event.target.closest('.burger')
       ) {
-        this.overlay.classList.remove('active');
-        this.modal.classList.remove('active');
+        this.handleSetModal('remove');
       }
     });
   }
