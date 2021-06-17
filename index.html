@@ -2,25 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz</title>
+  <meta name="viewport" content="width=device-width">
+  <title>Who Wants to Be a Millionaire</title>
   <script src="js/quiz.js" defer></script>
+  <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" href="images/logo.png" type="image" >
 </head>
 <body>
-<h1 class="name">Quiz</h1>
-<form class="form">
-  <input class="input" type="text" name="name" placeholder="Введите имя" required />
-</form>
+  <h1 class="name">Who Wants to Be a Millionaire</h1>
+  <form class="form">
+    <input class="input" type="text" name="name" placeholder="Enter your name" required />
+    <button>Start game!</button>
+  </form>
+  <section class="game-wrap">
+    <section class="winList"></section>
+    <div class="label fa fa-arrow-circle-left"></div>
+    <div class="quiz-container">
+      <div>
+        <div class='time'></div>
+        <div class='sum'></div>
+        <div class="quiz"></div>
+      </div>
+      <div class="buttons">
+        <button class="next">Accept</button>
+        <button class="submit">Take the win</button>
+      </div>
+    </div>
+    <div class="hints">
+      <div class='currentWin'><span class='currentWinText'>Current win:</span> <span class='currentWinNum'>0</span></div>
+      <button class="fifty">50:50</button>
+      <button class="call">Phone <span>A Friend</span></button>
+      <button class="audience"><span>Ask the </span>Audience</button>
+      <img src="images/logo.png" width="150" height="150" alt="logo">
+    </div>
+  </section>
+  <div class="results"></div>
+  <button class="restart">Start new game!</button>
 
-<section class="quiz-wrap">
-  <div class="quiz-container">
-    <div id="quiz"></div>
+  <div class="overlay"></div>
+  <div class="modal">
+    <div class="container-phone">
+      <!--телефонная трубка-->
+      <div id="call-phone" class="call-phone">
+        <div class="call-phone__circle"></div>
+        <div class="call-phone__circle-fill"></div>
+        <div class="call-phone__circle-img">
+          <i class="fa fa-phone icon-phone"></i>
+        </div>
+      </div>
+    </div>
+    <div class="container-circles">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <div class="circle circle-4"></div>
+      <div class="circle circle-5"></div>
+    </div>
+    <div class="modal-text"></div>
+    <button>Ok!</button>
   </div>
-  <button id="previous">Previous Question</button>
-  <button id="next">Next Question</button>
-  <button id="submit">Submit Quiz</button>
-  <button id="restart">Restart</button>
-  <div id="results"></div>
-</section>
 </body>
 </html>
